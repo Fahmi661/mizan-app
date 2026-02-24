@@ -6,7 +6,7 @@
 
 <br/><br/>
 
-### **مِيزَان** — *The Scale of Balance*
+## **مِيزَان** — *APLIKASI MIZAN*
 
 **A Premium Islamic Companion App · Built for Ramadan & Beyond**
 
