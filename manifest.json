@@ -1,0 +1,23 @@
+{
+    "name": "Mizan",
+    "short_name": "Mizan",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#FDFBF4",
+    "theme_color": "#0B2D18",
+    "description": "Aplikasi Ibadah & Ramadhan terlengkap",
+    "icons": [
+        {
+            "src": "/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ]
+}

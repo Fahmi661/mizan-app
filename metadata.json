@@ -1,0 +1,7 @@
+{
+  "name": "Ramadan Mubarak",
+  "description": "A premium, spiritual, and modern Ramadan companion app featuring prayer times, Tasbih, Khatam tracker, and dynamic themes.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

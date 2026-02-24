@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="google" content="notranslate" />
+  <title>Mizan</title>
+
+  <!-- PWA & App Icons -->
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/icon-192.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+  <meta name="theme-color" content="#0B2D18" />
+
+  <!-- KEAMANAN APLIKASI -->
+  <!-- Content Security Policy: Membatasi resource eksternal untuk mencegah XSS -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self' 'unsafe-eval' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://ufxjvugkmiorxlogvcmx.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.googleapis.com/css2; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net; img-src 'self' data: https://cdn.tailwindcss.com blob: https://nominatim.openstreetmap.org; media-src 'self' blob: https://ufxjvugkmiorxlogvcmx.supabase.co; connect-src 'self' ws: wss: https://ufxjvugkmiorxlogvcmx.supabase.co https://api.aladhan.com https://api.alquran.cloud https://nominatim.openstreetmap.org; font-src 'self' https://fonts.gstatic.com data:;">
+
+  <!-- Perlindungan Anti-Clickjacking (Frame Buster) -->
+  <script>
+    if (window.top !== window.self) {
+      window.top.location = window.self.location;
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined|Material+Icons+Round" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            sage: { DEFAULT: "#8BA888", dark: "#6A8D67" },
+            gold: { DEFAULT: "#FFB347", dark: "#D97706", accent: "#FFCC33" },
+            emerald: { DEFAULT: "#10B981", light: "#D1FAE5", dark: "#064E3B" },
+            lime: { DEFAULT: "#B9D96E" },
+            cream: "#FDFBF4",
+            dark: { DEFAULT: "#0B1120", surface: "#1E293B" },
+            primary: "#8BA888",
+            secondary: "#D4AF37",
+          },
+          fontFamily: {
+            arabic: ['Amiri', 'serif'],
+            display: ['Playfair Display', 'serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      /* Layout */
+      --app-max-width: 430px;
+      --app-padding-x: 16px;
+      --app-padding-y: 16px;
+      --section-gap: 12px;
+
+      /* Card */
+      --card-radius: 16px;
+      --card-radius-lg: 20px;
+      --card-padding: 18px 20px;
+      --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      --card-bg: #ffffff;
+
+      /* Typography */
+      --font-xs: 10px;
+      --font-sm: 12px;
+      --font-base: 14px;
+      --font-md: 15px;
+      --font-lg: 18px;
+      --font-xl: 22px;
+      --font-2xl: 32px;
+      --font-3xl: 48px;
+
+      /* Icon size */
+      --icon-sm: 18px;
+      --icon-md: 24px;
+      --icon-lg: 32px;
+      --icon-xl: 40px;
+
+      /* Warna */
+      --color-primary: #4caf6e;
+      --color-gold: #D4AF37;
+      --color-forest: #0B2D18;
+      --color-bg: #f9f7f2;
+      --color-bg-dark: #0B1120;
+      --color-muted: #888888;
+      --color-border: #f0f0f0;
+
+      /* Bottom nav height */
+      --nav-height: 64px;
+    }
+
+    .dark {
+      --card-bg: #1e293b;
+      --color-bg: #0B1120;
+      --color-border: #1e293b;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      background-color: #ffffff !important;
+      color: #000000 !important;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Manrope', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Remove spinners from number inputs */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+      appearance: none;
+    }
+
+    .juz-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .dark .glass-card {
+      background: rgba(30, 30, 30, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .golden-hour-gradient {
+      background: linear-gradient(180deg, #FFB347 0%, #FFCC33 100%);
+    }
+
+    .night-sky {
+      background: radial-gradient(circle at top right, #1e293b, #0b1120);
+    }
+
+    .bead-glow {
+      filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.3));
+    }
+
+    .safe-top {
+      padding-top: env(safe-area-inset-top);
+    }
+
+    .safe-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* --- NEW ANIMATIONS --- */
+
+    /* Page Transitions */
+    @keyframes pageSlideIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .animate-page-enter {
+      animation: pageSlideIn 0.2s ease forwards;
+    }
+
+    /* Bottom Sheet */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+
+    @keyframes sheetUp {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes sheetDown {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(100%);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
+    }
+
+    /* Staggered Entrance */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .stagger-appear>* {
+      opacity: 0;
+      animation: fadeInUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .stagger-appear>*:nth-child(1) {
+      animation-delay: 50ms;
+    }
+
+    .stagger-appear>*:nth-child(2) {
+      animation-delay: 150ms;
+    }
+
+    .stagger-appear>*:nth-child(3) {
+      animation-delay: 250ms;
+    }
+
+    .stagger-appear>*:nth-child(4) {
+      animation-delay: 350ms;
+    }
+
+    .stagger-appear>*:nth-child(5) {
+      animation-delay: 450ms;
+    }
+
+    /* Flip Animation for Numbers */
+    @keyframes flipIn {
+      0% {
+        transform: perspective(400px) rotateX(-90deg);
+        opacity: 0;
+      }
+
+      100% {
+        transform: perspective(400px) rotateX(0);
+        opacity: 1;
+      }
+    }
+
+    .animate-flip {
+      display: inline-block;
+      backface-visibility: hidden;
+      animation: flipIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Progress Bar Fill */
+    @keyframes fillWidth {
+      from {
+        width: 0;
+      }
+    }
+
+    .animate-fill {
+      animation: fillWidth 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    /* Pulse Glow */
+    @keyframes pulseGlow {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 179, 71, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(255, 179, 71, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 179, 71, 0);
+      }
+    }
+
+    .animate-pulse-glow {
+      animation: pulseGlow 2s infinite;
+    }
+
+    /* Moon Rise */
+    @keyframes moonRise {
+      from {
+        transform: translateY(50px) rotate(-10deg);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0) rotate(0);
+        opacity: 1;
+      }
+    }
+
+    .animate-moon-rise {
+      animation: moonRise 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    /* Star Pop */
+    @keyframes starPop {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      60% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .animate-star-pop {
+      animation: starPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    /* Ripple Effect */
+    @keyframes rippleEffect {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(0);
+      animation: rippleEffect 0.6s linear;
+      pointer-events: none;
+    }
+
+    /* Icon Bounce */
+    @keyframes iconBounce {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.2);
+      }
+    }
+
+    .animate-icon-bounce {
+      animation: iconBounce 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Mask for Tasbih */
+    .mask-linear-fade {
+      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+
+    /* ── Akses Cepat Animations (Fix 1) ── */
+
+    /* 1. Staggered entrance animation */
+    @keyframes acEntrance {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.85);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .akses-cepat-item {
+      opacity: 0;
+      animation: acEntrance 350ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      animation-delay: var(--ac-delay, 0ms);
+    }
+
+    /* 2. Tap / press animation */
+    .akses-cepat-card:active {
+      transform: scale(0.88) !important;
+      filter: brightness(1.1);
+    }
+
+    /* 3. Idle glow for Al-Quran card */
+    @keyframes glowPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+      }
+
+      50% {
+        box-shadow: 0 4px 24px rgba(212, 175, 55, 0.6);
+      }
+    }
+
+    .akses-cepat-quran-glow {
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+
+    /* ── Quran page animations ── */
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    .skeleton-line {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 6px;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes counterSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+
+  <link rel="stylesheet" href="/index.css">
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.574.0"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/assets/index-CsZGjAmm.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
+</html>

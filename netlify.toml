@@ -1,0 +1,30 @@
+[[redirects]]
+  from = "/api/supabase/*"
+  to = "https://ufxjvugkmiorxlogvcmx.supabase.co/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/aladhan/*"
+  to = "https://api.aladhan.com/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/quran/*"
+  to = "https://api.alquran.cloud/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/nominatim/*"
+  to = "https://nominatim.openstreetmap.org/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*.apk"
+  [headers.values]
+    Content-Type = "application/vnd.android.package-archive"
+    Content-Disposition = "attachment"
